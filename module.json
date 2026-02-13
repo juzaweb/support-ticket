@@ -1,0 +1,11 @@
+{
+    "name": "SupportTicket",
+    "alias": "support-ticket",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Juzaweb\\Modules\\SupportTicket\\Providers\\SupportTicketServiceProvider"
+    ],
+    "files": []
+}
