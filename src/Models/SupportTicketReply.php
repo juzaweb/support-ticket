@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Juzaweb\Modules\Admin\Models\User;
 use Juzaweb\Modules\Core\Models\Model;
+use Juzaweb\Modules\Core\Traits\HasAPI;
+use Juzaweb\Modules\SupportTicket\Http\Resources\API\SupportTicketReplyResource;
 
 class SupportTicketReply extends Model
 {
-    use HasUuids;
+    use HasAPI, HasUuids;
 
     protected $table = 'support_ticket_replies';
 
@@ -32,5 +34,10 @@ class SupportTicketReply extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public static function getResource(): string
+    {
+        return SupportTicketReplyResource::class;
     }
 }

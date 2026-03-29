@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Juzaweb\Modules\Core\Models\Authenticatable;
 use Juzaweb\Modules\Core\Models\Model;
 use Juzaweb\Modules\Core\Traits\HasAPI;
+use Juzaweb\Modules\SupportTicket\Http\Resources\API\SupportTicketResource;
 
 class SupportTicket extends Model
 {
@@ -49,5 +50,10 @@ class SupportTicket extends Model
     {
         return $builder->where('ticketable_type', get_class($user))
             ->where('ticketable_id', $user->getKey());
+    }
+
+    public static function getResource(): string
+    {
+        return SupportTicketResource::class;
     }
 }

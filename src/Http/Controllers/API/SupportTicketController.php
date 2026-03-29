@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Juzaweb\Modules\Core\Http\Controllers\APIController;
 use Juzaweb\Modules\SupportTicket\Http\Requests\API\StoreSupportTicketRequest;
 use Juzaweb\Modules\SupportTicket\Http\Requests\API\StoreSupportTicketReplyRequest;
-use Juzaweb\Modules\SupportTicket\Http\Resources\API\SupportTicketResource;
-use Juzaweb\Modules\SupportTicket\Http\Resources\API\SupportTicketReplyResource;
 use Juzaweb\Modules\SupportTicket\Models\SupportTicket;
 use Juzaweb\Modules\SupportTicket\Models\SupportTicketReply;
 use OpenApi\Annotations as OA;
@@ -41,9 +39,41 @@ class SupportTicketController extends APIController
 
         $tickets = SupportTicket::ofUser($user)->paginate($this->getLimitRequest());
 
-        return response()->json(
-            SupportTicketResource::collection($tickets)->response()->getData(true)
-        );
+        return $this->restSuccess($tickets);
+    }
+
+    /**
+     * @OA\Get(
+     *      path="/api/v1/support-tickets/{id}",
+     *      tags={"Support Ticket"},
+     *      summary="Get a support ticket",
+     *      description="Get a support ticket by id.",
+     *      security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="data", ref="#/components/schemas/SupportTicketResource")
+     *          )
+     *      ),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=404, description="Not found")
+     * )
+     */
+    public function show(Request $request, string $id): JsonResponse
+    {
+        $user = $request->user();
+
+        $ticket = SupportTicket::ofUser($user)->findOrFail($id);
+
+        return $this->restSuccess($ticket);
     }
 
     /**
@@ -87,10 +117,7 @@ class SupportTicketController extends APIController
             'status' => 'open',
         ]);
 
-        return response()->json(
-            ['data' => new SupportTicketResource($ticket)],
-            201
-        );
+        return $this->restSuccess($ticket, '', 201);
     }
 
     /**
@@ -141,9 +168,6 @@ class SupportTicketController extends APIController
 
         $ticket->update(['status' => 'open']);
 
-        return response()->json(
-            ['data' => new SupportTicketReplyResource($reply)],
-            201
-        );
+        return $this->restSuccess($reply, '', 201);
     }
 }
