@@ -16,6 +16,7 @@
         "juzaweb/core": "^5.0"
     },
     "require-dev": {
+        "juzaweb/api": "dev-master",
         "orchestra/testbench": "^8.0|^9.0",
         "phpunit/phpunit": "^10.0"
     },
