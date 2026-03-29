@@ -77,6 +77,43 @@ class SupportTicketController extends APIController
     }
 
     /**
+     * @OA\Get(
+     *      path="/api/v1/support-tickets/{id}/replies",
+     *      tags={"Support Ticket"},
+     *      summary="Get support ticket replies",
+     *      description="Get replies for a specific support ticket.",
+     *      security={{"bearerAuth":{}}},
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Parameter(ref="#/components/parameters/query_limit"),
+     *      @OA\Parameter(ref="#/components/parameters/query_page"),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/SupportTicketReplyResource"))
+     *          )
+     *      ),
+     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(response=404, description="Not found")
+     * )
+     */
+    public function replies(Request $request, string $id): JsonResponse
+    {
+        $user = $request->user();
+
+        $ticket = SupportTicket::ofUser($user)->findOrFail($id);
+        $replies = $ticket->replies()->paginate($this->getLimitRequest());
+
+        return $this->restSuccess($replies);
+    }
+
+    /**
      * @OA\Post(
      *      path="/api/v1/support-tickets",
      *      tags={"Support Ticket"},
