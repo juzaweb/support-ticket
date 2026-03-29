@@ -21,6 +21,8 @@ Route::group(
     ],
     function () {
         Route::get('support-tickets', [SupportTicketController::class, 'index']);
+        Route::get('support-tickets/{id}', [SupportTicketController::class, 'show']);
+        Route::get('support-tickets/{id}/replies', [SupportTicketController::class, 'replies']);
         Route::post('support-tickets', [SupportTicketController::class, 'store']);
         Route::post('support-tickets/{id}/reply', [SupportTicketController::class, 'reply']);
     }
