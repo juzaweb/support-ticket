@@ -62,9 +62,9 @@ class SupportTicketServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/config.php' => config_path('support-ticket.php'),
+            __DIR__ . '/../../config/config.php' => config_path('support-ticket.php'),
         ], 'support-ticket-config');
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'support-ticket');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'support-ticket');
     }
 
     protected function registerTranslations(): void
