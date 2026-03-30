@@ -17,7 +17,6 @@ class SupportTicketReply extends Model
 
     protected $fillable = [
         'ticket_id',
-        'user_id',
         'content',
         'is_staff_reply',
     ];
@@ -33,7 +32,7 @@ class SupportTicketReply extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public static function getResource(): string
