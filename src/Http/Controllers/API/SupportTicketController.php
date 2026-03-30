@@ -196,12 +196,15 @@ class SupportTicketController extends APIController
 
         $ticket = SupportTicket::ofUser($user)->findOrFail($id);
 
-        $reply = SupportTicketReply::create([
+        $reply = new SupportTicketReply([
             'ticket_id' => $ticket->id,
-            'user_id' => $user->getKey(),
             'content' => $request->input('content'),
             'is_staff_reply' => false,
         ]);
+
+        $reply->setAttribute('created_by', $user->getKey());
+        $reply->setAttribute('created_type', get_class($user));
+        $reply->save();
 
         $ticket->update(['status' => 'open']);
 

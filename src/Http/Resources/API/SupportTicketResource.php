@@ -28,8 +28,8 @@ class SupportTicketResource extends JsonResource
             'content' => $this->resource->content,
             'status' => $this->resource->status,
             'category_id' => $this->resource->category_id,
-            'created_at' => jw_date_format($this->resource->created_at),
-            'updated_at' => jw_date_format($this->resource->updated_at),
+            'created_at' => $this->resource->created_at,
+            'updated_at' => $this->resource->updated_at,
         ];
     }
 }
