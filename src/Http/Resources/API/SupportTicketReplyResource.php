@@ -26,8 +26,8 @@ class SupportTicketReplyResource extends JsonResource
             'ticket_id' => $this->resource->ticket_id,
             'content' => $this->resource->content,
             'is_staff_reply' => $this->resource->is_staff_reply,
-            'created_at' => $this->resource->created_at ? jw_date_format($this->resource->created_at) : null,
-            'updated_at' => $this->resource->updated_at ? jw_date_format($this->resource->updated_at) : null,
+            'created_at' => $this->resource->created_at ? $this->resource->created_at->format('Y-m-d H:i:s') : null,
+            'updated_at' => $this->resource->updated_at ? $this->resource->updated_at->format('Y-m-d H:i:s') : null,
         ];
     }
 }
